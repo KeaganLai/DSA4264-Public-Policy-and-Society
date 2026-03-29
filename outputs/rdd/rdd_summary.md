@@ -19,4 +19,5 @@ Main bandwidth: 0.5 km
 - rdd_placebo_results.csv
 - rdd_plot_threshold75_cutoff1km.png
 - rdd_plot_threshold75_cutoff2km.png
+- rdd_summary.md
 - rdd_threshold_results.csv
