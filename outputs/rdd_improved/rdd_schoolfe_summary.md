@@ -15,5 +15,6 @@ Main bandwidth: 0.5 km
 - rdd_schoolfe_covariate_balance.csv
 - rdd_schoolfe_donut_results.csv
 - rdd_schoolfe_main_results.csv
+- rdd_schoolfe_placebo_results.csv
 - rdd_schoolfe_summary.md
 - rdd_schoolfe_threshold_results.csv
