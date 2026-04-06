@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HDB Resale Insights Assistant</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@600;700;800&display=swap");
+      :root {
+        --bg: #f2faf5;
+        --card: #ffffff;
+        --ink: #1c3129;
+        --muted: #59756b;
+        --primary: #1e9a77;
+        --primary-strong: #15735a;
+        --border: #c9e5da;
+      }
+      * {
+        box-sizing: border-box;
+        font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+      }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(255, 145, 77, 0.16), transparent 35%),
+          radial-gradient(circle at 96% 0, rgba(30, 154, 119, 0.2), transparent 37%),
+          linear-gradient(180deg, #ebf8f1, var(--bg) 45%);
+        color: var(--ink);
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 28px auto;
+        padding: 0 16px;
+      }
+      .hero {
+        margin-bottom: 16px;
+      }
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        font-family: "Sora", "Space Grotesk", sans-serif;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .hero a {
+        display: inline-block;
+        margin-top: 8px;
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .hero a:hover {
+        text-decoration: underline;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 12px 26px rgba(18, 83, 65, 0.14);
+        padding: 18px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      @media (max-width: 820px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      input,
+      select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 10px 11px;
+        font-size: 14px;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--primary-strong);
+      }
+      .btn-secondary {
+        background: #edf2f8;
+        color: #1f3854;
+      }
+      .status {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .modal-bg {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 28, 49, 0.45);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal {
+        max-width: 850px;
+        width: 100%;
+        max-height: 86vh;
+        overflow-y: auto;
+        background: white;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        padding: 20px;
+      }
+      .modal h2 {
+        margin-top: 0;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+        gap: 10px;
+      }
+      .metric {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+        background: #fbfdff;
+      }
+      .metric .label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .metric .value {
+        font-size: 20px;
+        font-weight: 700;
+      }
+      ul {
+        margin-top: 8px;
+      }
+      .small {
+        color: var(--muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="hero">
+        <h1>HDB Resale Insights Assistant</h1>
+        <p>
+          Enter flat details in plain terms. The system cleans the address, resolves location, and returns
+          both a price range and a short policy-friendly explanation of what it means.
+        </p>
+        <a href="/">Back to Policy Dashboard</a>
+        <a href="/chat-ui">Prefer natural language? Open the Chat Assistant</a>
+      </div>
+
+      <div class="card">
+        <form id="predict-form">
+          <div class="grid">
+            <div>
+              <label for="town">Town</label>
+              <input id="town" name="town" placeholder="ANG MO KIO" required />
+            </div>
+            <div>
+              <label for="street_name">Street</label>
+              <input id="street_name" name="street_name" placeholder="AVE 8 (or full street name)" required />
+            </div>
+            <div>
+              <label for="block">Block</label>
+              <input id="block" name="block" placeholder="510" required />
+            </div>
+            <div>
+              <label for="number_of_rooms">Number of Rooms</label>
+              <select id="number_of_rooms" name="number_of_rooms">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+            </div>
+            <div>
+              <label for="floor_area_sqm">Floor Area (sqm)</label>
+              <input id="floor_area_sqm" name="floor_area_sqm" type="number" step="0.1" placeholder="93" required />
+            </div>
+            <div>
+              <label for="lease_commence_year">Lease Commencement Year</label>
+              <input id="lease_commence_year" name="lease_commence_year" type="number" placeholder="2000" required />
+            </div>
+            <div>
+              <label for="storey_number">Floor Number</label>
+              <input id="storey_number" name="storey_number" type="number" min="1" max="60" placeholder="11" />
+            </div>
+            <div>
+              <label for="storey_range">Storey Range (optional)</label>
+              <input id="storey_range" name="storey_range" placeholder="10 TO 12" />
+            </div>
+            <div>
+              <label for="good_school_threshold">Good School Threshold</label>
+              <select id="good_school_threshold" name="good_school_threshold">
+                <option value="75">75</option>
+                <option value="80" selected>80</option>
+                <option value="85">85</option>
+                <option value="90">90</option>
+              </select>
+            </div>
+            <div>
+              <label for="valuation_year">Valuation Year</label>
+              <input id="valuation_year" name="valuation_year" type="number" value="2026" required />
+            </div>
+            <div>
+              <label for="valuation_quarter">Valuation Quarter</label>
+              <select id="valuation_quarter" name="valuation_quarter">
+                <option value="1">Q1</option>
+                <option value="2">Q2</option>
+                <option value="3">Q3</option>
+                <option value="4">Q4</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn-primary" type="submit">Run Prediction</button>
+            <button class="btn-secondary" type="button" id="reset-btn">Reset</button>
+          </div>
+          <div class="status" id="status"></div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-bg" id="modal-bg">
+      <div class="modal">
+        <h2>Prediction and Policy Insights</h2>
+        <div class="metrics">
+          <div class="metric">
+            <div class="label">Predicted Price</div>
+            <div class="value" id="pred-price">-</div>
+          </div>
+          <div class="metric">
+            <div class="label">P10</div>
+            <div class="value" id="pred-p10">-</div>
+          </div>
+          <div class="metric">
+            <div class="label">P90</div>
+            <div class="value" id="pred-p90">-</div>
+          </div>
+          <div class="metric">
+            <div class="label">Predicted Real Price</div>
+            <div class="value" id="pred-real">-</div>
+          </div>
+        </div>
+
+        <h3>Resolved Location</h3>
+        <p id="resolved-location" class="small">-</p>
+
+        <h3>Hedonic Evidence</h3>
+        <p id="hedonic" class="small">-</p>
+
+        <h3>RDD Robustness Context</h3>
+        <p id="rdd" class="small">-</p>
+
+        <h3>Model Diagnostics</h3>
+        <p id="diag" class="small">-</p>
+
+        <h3>Insights</h3>
+        <ul id="insights"></ul>
+
+        <h3>What this means (quick read)</h3>
+        <p id="so-what" class="small">-</p>
+
+        <div class="actions">
+          <button class="btn-primary" id="close-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("predict-form");
+      const statusEl = document.getElementById("status");
+      const modalBg = document.getElementById("modal-bg");
+
+      const formatMoney = (n) =>
+        new Intl.NumberFormat("en-SG", {
+          style: "currency",
+          currency: "SGD",
+          maximumFractionDigits: 0
+        }).format(n);
+
+      function setStatus(msg) {
+        statusEl.textContent = msg;
+      }
+
+      function showModal(result) {
+        const pred = result.prediction;
+        const resolved = result.resolved_location;
+
+        document.getElementById("pred-price").textContent = formatMoney(pred.predicted_resale_price_sgd);
+        document.getElementById("pred-p10").textContent = formatMoney(pred.prediction_interval_sgd.p10);
+        document.getElementById("pred-p90").textContent = formatMoney(pred.prediction_interval_sgd.p90);
+        document.getElementById("pred-real").textContent = formatMoney(pred.predicted_real_price_sgd);
+
+        document.getElementById("resolved-location").textContent =
+          `Method: ${resolved.method} | Query: ${resolved.search_query} | Matched: ${resolved.matched_address || "-"} | Lat/Lon: ${resolved.latitude.toFixed(6)}, ${resolved.longitude.toFixed(6)}`;
+
+        document.getElementById("hedonic").textContent =
+          `Threshold ${pred.hedonic_evidence.threshold}: 0-1km premium ${pred.hedonic_evidence.premium_0_1km_pct.toFixed(2)}%, 1-2km premium ${pred.hedonic_evidence.premium_1_2km_pct.toFixed(2)}%, Adj R^2 ${pred.hedonic_evidence.adj_r2.toFixed(4)}.`;
+
+        document.getElementById("rdd").textContent =
+          `Cutoff ${pred.rdd_evidence.cutoff_km}km: ${pred.rdd_evidence.effect_pct.toFixed(2)}% (p=${pred.rdd_evidence.p_value}). ${pred.rdd_evidence.interpretation}`;
+
+        document.getElementById("diag").textContent =
+          `Mode: ${pred.model_diagnostics.model_mode} | Model: ${pred.model_diagnostics.model_version} | Threshold requested/used: ${pred.model_diagnostics.threshold_requested}/${pred.model_diagnostics.threshold_used} | Price index used: ${pred.model_diagnostics.valuation_price_index_used.toFixed(1)}. ${pred.model_diagnostics.note}`;
+
+        const ul = document.getElementById("insights");
+        ul.innerHTML = "";
+        (pred.insights || []).forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          ul.appendChild(li);
+        });
+
+        const soWhat = document.getElementById("so-what");
+        const p10 = pred.prediction_interval_sgd.p10;
+        const p90 = pred.prediction_interval_sgd.p90;
+        soWhat.textContent =
+          `Use SGD ${Math.round(p10).toLocaleString()} to ${Math.round(p90).toLocaleString()} as the likely planning band for this unit profile. ` +
+          `If this range is materially above nearby alternatives, affordability pressure may be concentrated in this area.`;
+
+        modalBg.style.display = "flex";
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!form.storey_number.value && !form.storey_range.value) {
+          setStatus("Please provide either Floor Number or Storey Range.");
+          return;
+        }
+        setStatus("Submitting request...");
+
+        const payload = {
+          town: form.town.value,
+          street_name: form.street_name.value,
+          block: form.block.value,
+          number_of_rooms: Number(form.number_of_rooms.value),
+          floor_area_sqm: Number(form.floor_area_sqm.value),
+          lease_commence_year: Number(form.lease_commence_year.value),
+          storey_number: form.storey_number.value ? Number(form.storey_number.value) : null,
+          storey_range: form.storey_range.value || null,
+          valuation_year: Number(form.valuation_year.value),
+          valuation_quarter: Number(form.valuation_quarter.value),
+          good_school_threshold: Number(form.good_school_threshold.value),
+          include_comparables: true,
+          comparables_limit: 12,
+          include_llm_insights: true
+        };
+
+        try {
+          const resp = await fetch("/predict/friendly", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!resp.ok) {
+            const txt = await resp.text();
+            throw new Error(txt || "Request failed");
+          }
+
+          const result = await resp.json();
+          showModal(result);
+          setStatus("Done.");
+        } catch (err) {
+          setStatus("Request failed. Please check input format and try again.");
+          console.error(err);
+        }
+      });
+
+      document.getElementById("reset-btn").addEventListener("click", () => {
+        form.reset();
+        setStatus("");
+      });
+
+      document.getElementById("close-modal").addEventListener("click", () => {
+        modalBg.style.display = "none";
+      });
+    </script>
+  </body>
+</html>
