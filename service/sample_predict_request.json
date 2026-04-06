@@ -1,0 +1,16 @@
+{
+  "latitude": 1.3734,
+  "longitude": 103.8491,
+  "town": "ANG MO KIO",
+  "flat_type": 4,
+  "floor_area_sqm": 93.0,
+  "lease_commence_year": 2000,
+  "storey_relative_category": "MID_IN_ESTATE",
+  "valuation_year": 2026,
+  "valuation_quarter": 1,
+  "good_school_threshold": 80,
+  "include_comparables": true,
+  "comparables_limit": 12,
+  "include_llm_insights": true
+}
+

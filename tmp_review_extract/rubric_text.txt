@@ -1,0 +1,85 @@
+﻿DSA4264: Sense-making Case Analysis: Public Policy and Society
+Group Project: Grading Rubric (Presentation)
+Grade
+Criterion 1: Insightfulness
+Criterion 2: Communication
+Excellent (A)
+ï‚·  Insights are highly relevant to the problem and demonstrate exceptional understanding of the key stakeholder and their needs
+ï‚·  Analysis goes beyond surface-level observations, revealing deep, thoughtful consideration of the data, approach, and limitations
+ï‚·  Insights have clear, practical applications and add significant value to the stakeholder
+ï‚·  Interactive demo is helpful for stakeholders to understand and act on the key insights of the project
+ï‚·  Presentation is very clear, logical, and well-structured
+ï‚·  Complex ideas are explained concisely and precisely, without unnecessary jargon
+ï‚·  Visual aids (like charts) are highly effective, enhancing understanding of the content
+ï‚·  Delivery is engaging, maintaining audience interest throughout
+Satisfactory (B)
+ï‚·  Insights are generally relevant to the problem and show good understanding of the key stakeholderâ€™s concerns
+ï‚·  Analysis shows depth in some areas but may remain surface-level in others, and may miss out on a few critical points
+ï‚·  Insights have some practical applications, adding moderate value to the stakeholder
+ï‚·  Presentation is generally clear and well-structured, with some minor logical gaps
+ï‚·  Most ideas are explained clearly, but some complex points may lack precision
+ï‚·  Visual aids are helpful but may not always enhance understanding
+ï‚·  Delivery is mostly engaging
+Needs Improvement (C)
+ï‚·  Insights have limited relevance to the project topic and demonstrate basic understanding
+ï‚·  Analysis remains largely surface-level, lacking depth and thoughtful consideration
+ï‚·  Insights have minimal practical applications and add little value to the project
+ï‚·  Presentation lacks clear structure and logical flow
+ï‚·  Ideas are often unclear or imprecisely explained, with overuse of jargon
+ï‚·  Visual aids (if used) are ineffective or distracting
+ï‚·  Delivery is unengaging, failing to maintain audience interest
+DSA4264: Sense-making Case Analysis: Public Policy and Society
+Group Project: Grading Rubric (Technical Report)
+Grade
+Criterion 1: Robustness
+Criterion 2: Execution
+Criterion 3: Communication
+Excellent (A)
+ï‚·  Demonstrates exceptional application of advanced data science techniques with deep understanding of their theoretical foundations and practical implications in the public sector context
+ï‚·  Approach is robust, accounting for various scenarios including data quality issues, policy changes, and ethical considerations
+ï‚·  Detailed explanation of each step in the methodology, including rationale for choices made in the context of public sector constraints
+ï‚·  Clear consideration of limitations, potential biases, and areas for future improvement relevant to the public sector context
+ï‚·  Thorough addressing of key stakeholders' concerns, with clear links between methodology and policy implications
+ï‚·  Code is highly efficient, well-organised, and follows best practices for the chosen language (either Python or R)
+ï‚·  Extensive use of comments and documentation, making the code easily understandable
+ï‚·  Artifacts (e.g. charts, diagrams, notebooks) are of exceptional quality and significantly enhance the key stakeholdersâ€™ understanding and usability
+ï‚·  Clear demonstration of how the code and artifacts directly address project objectives
+ï‚·  Technical report is very clear and concise, making it easy for technical audiences to get up to speed quickly
+ï‚·  Complex technical concepts are explained precisely, accessible to both technical and non-technical audiences
+ï‚·  Effective use of visual aids (diagrams, charts, etc.) to enhance understanding
+ï‚·  Consistent and appropriate use of technical terminology
+ï‚·  Logical flow of ideas, with clear connections between sections
+ï‚·  No problems with grammar, spelling, and formatting
+Satisfactory (B)
+ï‚·  Applies appropriate data science techniques with good understanding, using a suitable combination of methods for the public sector problem, but may not fully exploit advanced techniques where applicable
+ï‚·  Approach is mostly robust, addressing major public sector considerations but may miss some edge cases
+ï‚·  Most steps in the methodology are explained, with some rationale provided in the public sector context
+ï‚·  Some consideration of limitations and biases, but discussion of public sector-specific improvements may be limited
+ï‚·  Addresses most key stakeholders' concerns, but some connections between methodology and policy implications may be unclear
+ï‚·  Code is generally efficient and organized, with some adherence to best practices
+ï‚·  Adequate use of comments and documentation, though some areas may lack clarity
+ï‚·  Artifacts are of good quality and generally helpful to the key stakeholder, with some room for improvement
+ï‚·  Most aspects of the code and artifacts align with project objectives
+ï‚·  Technical report is generally clear and concise, with minor issues
+ï‚·  Most technical concepts are explained well, but some may be too complex or oversimplified
+ï‚·  Some use of visual aids, though not always effectively integrated
+ï‚·  Mostly consistent use of technical terminology, with occasional lapses
+ï‚·  Generally logical flow of ideas, though some connections may be unclear
+ï‚·  A few grammatical, spelling, or formatting errors
+Needs Improvement (C)
+ï‚·  Applies basic data science techniques with limited sophistication, relying on a narrow range of methods that may not be fully appropriate for the complexity of public sector problems
+ï‚·  Methodology shows basic awareness of public sector issues but lacks depth or comprehensive thinking
+ï‚·  Approach has significant gaps in robustness, failing to account for many public sector-specific scenarios
+ï‚·  Explanation of methodology is superficial, with little rationale for choices made in the public sector context
+ï‚·  Little to no consideration of public sector-specific limitations, biases, or potential improvements
+ï‚·  Inadequate addressing of key stakeholders' concerns, with weak links between methodology and policy implications
+ï‚·  Code is functional but inefficient, poorly organized, or fails to follow best practices
+ï‚·  Minimal use of comments and documentation, making the code difficult to understand
+ï‚·  Artifacts are of low quality or provide little value to the key stakeholder
+ï‚·  Unclear how some aspects of the code and artifacts relate to project objectives
+ï‚·  Technical report lacks clarity and is overly verbose, making it difficult to follow
+ï‚·  Technical concepts are poorly explained, either too complex or overly simplified
+ï‚·  Minimal or ineffective use of visual aids
+ï‚·  Inconsistent or inappropriate use of technical terminology
+ï‚·  Disjointed flow of ideas, with weak connections between sections
+ï‚·  Numerous grammatical, spelling, or formatting errors

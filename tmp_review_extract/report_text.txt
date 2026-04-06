@@ -1,0 +1,516 @@
+﻿1. Introduction(120)
+1.1 Background(42)
+In Singapore, primary school admission prioritises children living within 1 km, creating strong demand for housing near â€œgoodâ€ schools. This demand is capitalised into higher HDB resale prices, potentially reducing affordability and increasing spatial inequality by linking educational access to housing wealth.
+1.2 Research Question(78)
+This study aims to estimate the effect of proximity to â€œgoodâ€ primary schools on HDB resale prices. Here, â€œgood schoolsâ€ are defined as schools with high demand rather than purely objective academic performance. Specifically, it examines whether flats nearer to high-demand schools command a premium, controlling for other factors. Using the 1 km admission cutoff, it identifies whether price differences are driven by proximity rather than underlying housing characteristics, providing policy-relevant evidence on educationâ€™s impact on housing markets.
+2. Data(285)
+2.1 Overview(55)
+The analysis uses HDB resale transactions across Singapore (2013â€“2025), merged with school registration and geospatial accessibility data. The final dataset contains 291,419 observations and 51 variables. Each observation represents a resale transaction matched with housing, school, and locational characteristics.
+A detailed summary of all datasets, variables and data sources is provided in Appendix A.
+2.2 HDB Resale Transaction Data(34)
+HDB resale transaction data is obtained from data.gov.sg. Transaction months are converted to datetime to extract the year and quarter. Flat addresses are geocoded via OneMap API, with minimal missing observations dropped.
+2.3 Housing Price Index(33)
+To account for general inflation in the housing market, nominal resale prices are deflated using the HDB Resale Price Index (RPI). Real resale prices are constructed as:
+where  indexes flats and  indexes time.
+2.4 School Registration and School Characteristics Data(77)
+School desirability is measured using Primary 1 registration outcomes. The number of applicants and vacancies in Phases 2B and 2C are used, as they better reflect parental demand than earlier priority-based phases, which depend on institutional ties like siblings, alumni, and staff affiliation.
+Ballot intensity and persistence capture short- and long-term demand, while Gifted Education Programme (GEP) and Special Assistance Plan (SAP)  participation proxy school quality. School locations are obtained via OneMap with manual corrections where needed.
+2.5 Accessibility and Amenity Data(86)
+To control for neighbourhood accessibility, geospatial data on transport and amenities are used. Bus stop and MRT locations come from LTA DataMall, hawker centres from data.gov.sg, and shopping malls are separately geocoded.
+Distances are calculated using the Haversine formula, which measures great-circle distance and accounts for Earthâ€™s curvature, providing more accurate city-wide proximity measures than Euclidean distance.
+Distance to the Central Business District is proxied by Raffles Place MRT station, reflecting its role as Singaporeâ€™s primary financial and commercial centre (National Library Board, 2023).
+3. Data Preprocessing and Feature Engineering(486)
+3.1 Dependent Variable(66)
+The main dependent variable is the logarithm of real resale price per square foot:
+Price per square foot normalises prices by unit size, ensuring comparability across flats and avoiding confounding size effects with location or school proximity.
+The log transformation reduces skewness, limits outlier influence, and stabilises estimates, while allowing coefficients to be interpreted as approximate percentage changes, which are more meaningful in a housing context.
+3.2 Construction of the School Desirability Index (SDI) (23)
+School demand is proxied using Primary 1 registration outcomes. The SDI captures both the intensity and persistence of excess demand for each school.
+3.2.1 Ballot Intensity(80)
+Ballot intensity is measured as the log ratio of applicants to vacancies in Phases 2B and 2C:
+where â€‹ and â€‹ denotes number of applicants, and  and â€‹ denotes the number of vacancies for school  in year .
+An across-phase ballot indicator is added to identify schools oversubscribed in both phases, reflecting consistently high demand:
+These are combined into an adjusted ballot intensity measure, where the continuous component is weighted more heavily, and the indicator captures discrete demand spikes:
+Where:
+: standardisation
+3.2.2 Persistence of Demand(37)
+To measure how consistently a school experiences excess demand, we compute a rolling ballot frequency:
+where:
+â€‹: indicator equal to 1 if balloting occurred in year , else 0
+summation averages ballot occurrences over the past five years
+3.2.3 School Desirability Index(14)
+The SDI combines both dimensions, capturing both current demand and its persistence over time:
+3.3 Construction of the Good School Index (GSI)(104)
+The Good School Index (GSI) assumes housing prices reflect perceived rather than purely objective school quality. Schools seen as offering better opportunities attract stronger admission demand, which, under Singaporeâ€™s distance-based admission system, is capitalised into higher nearby housing prices.
+The index combines demand indicators with GEP and SAP participation to capture both parental preferences and school characteristics. Greater weight is assigned to SDI, as it directly reflects demand intensity and householdsâ€™ willingness to pay.
+Schools are classified as â€œgoodâ€ if they fall in the upper tail of the GSI distribution. The baseline uses the 80th percentile, with 75, 85, and 90 tested for robustness.
+3.4 School Proximity Variables(75)
+Firstly, general school density measures count the number of primary schools within specified distance bands from each flat:
+where  denotes the haversine distance between flat  and school .
+Secondly, school desirability measures count the number of schools above each GSI percentile threshold  within these distance bands, capturing exposure to highly desirable schools:
+Binary indicators are also constructed to reflect whether at least one such school exists within each band, providing a more interpretable measure of access:
+3.5 Mature Estate Indicator(20)
+A binary variable indicating whether a flat is in a mature town. The towns can be found in Appendix B.
+3.6 Flat Type Mapping(25)
+Flat type is converted into an ordinal variable based on size, with larger flats assigned higher values to better capture its relationship with resale price.
+3.7 Categorisation of Storey Range(42)
+Storey range is converted to a midpoint floor level, then normalised within each town using percentile ranks to account for differences in building height. Flats are grouped into:
+LOW_IN_ESTATE: Bottom 33% of floors within the town
+MID_IN_ESTATE: Middle 33%
+HIGH_IN_ESTATE: Top 33%
+4. Methodology(485)
+This study adopts a two-pronged empirical strategy combining a hedonic regression model with a regression discontinuity design (RDD). The hedonic regression serves as the primary framework to estimate the relationship between HDB resale prices and proximity to desirable primary schools across the full sample, controlling for structural and locational factors. However, estimates may still reflect omitted variable bias due to unobserved neighbourhood quality.
+To strengthen causal interpretation, an RDD is implemented around the 1 km admission cutoff. By comparing flats just inside and outside the boundary, it identifies the local causal effect of priority admission eligibility. Together, the hedonic model captures broad, market-wide price gradients associated with school proximity, while the RDD isolates the causal effect of the admission policy at the cutoff, helping to distinguish policy-driven effects from purely correlational patterns.
+4.1 Hedonic Regression Model Specification(151)
+The baseline specification is:
+Where:
+: Log real price per square foot
+: Indicator for flats within 1 km of a desirable school
+: Indicator for flats within 1â€“2 km of a desirable school
+: Vector for control variables
+: error term
+The coefficients  and â€‹ represent percentage price premiums for being within each distance band, holding all other factors constant.
+To improve model design and assess robustness, the hedonic regression is estimated sequentially.  The baseline includes flat characteristics, followed by locational controls.
+Finally, school availability measures (e.g., number of nearby primary schools) are included to distinguish proximity to desirable schools from general access. This stepwise approach tests whether the estimated proximity premium remains stable with additional controls, strengthening the credibility of the results.
+4.2 Regression Discontinuity Design(202)
+The baseline RDD specification is:
+Where:
+: Log real price per square foot
+: Indicator for flats within 1 km of a desirable school (treatment)
+: Distance to the nearest desirable primary school (running variable, centred at 1 km cutoff)
+: Linear function of distance
+: error term
+The coefficient  captures the local treatment effect at the 1 km cutoff, interpreted as the causal impact of eligibility for the Primary 1 priority admission policy on resale prices. It reflects the price difference between flats just within and just outside the boundary.
+Unlike hedonic regression, this estimate has a causal interpretation under standard RDD assumptions.
+To improve identification and account for potential confounding, the RDD is extended as follows:
+Where:
+: School fixed effects
+: Vector of control variables
+The improved specification strengthens the design by controlling for school-level heterogeneity using fixed effects and improving inference through clustering at the school level.
+5. Results
+5.1 Hedonic Regression Model(762)
+5.1.1 Empirical Results(114)
+Model
+Specification
+0â€“1km Premium (%)
+1â€“2km Premium (%)
+Adj RÂ²
+N
+Model 1
+FE only
+0.73**
+1.66**
+0.778
+291,419
+Model 2
++ Accessibility
+0.87**
+0.75**
+0.822
+291,419
+Model 3
++ School Density
+1.16**
+0.41**
+0.823
+291,419
+Table 1: Results of Hedonic Regression
+Notes: ** denotes statistical significance at the 5% level (p < 0.05)
+Model 1 produces counterintuitive results, with a larger premium for 1-2 km than 0-1 km, suggesting omitted variable bias from unaccounted locational factors.
+After introducing accessibility controls (Model 2), the 0-1 km premium rises while the 1-2 km premium falls, indicating that part of the earlier effect was driven by transport and amenities.
+With school density controls (Model 3), the estimates stabilise, with the premium concentrated within 1 km and a smaller positive effect for 1-2 km.
+Model 3 is adopted as the preferred specification, as it accounts for both locational accessibility and school availability, thereby isolating the premium associated with proximity to desirable schools in a manner consistent with the institutional admission framework.
+5.1.2 Robustness checks(291)
+5.1.2.1 Alternative Definitions of â€œGood Schoolâ€ (Threshold Robustness)(118)
+To test sensitivity to the definition of â€œgood schoolsâ€, the hedonic regression was re-estimated using SDI thresholds of 75, 80, 85, and 90.
+Threshold
+Premium (0â€“1 km)
+Premium (1â€“2 km)
+Adj. RÂ²
+N
+75
+0.46%**
+0.80%**
+0.8227
+291,419
+80
+1.16%**
+0.41%**
+0.8229
+291,419
+85
+1.27%**
+0.34%**
+0.8230
+291,419
+90
+0.67%**
+0.12%**
+0.8226
+291,419
+Table 2: Results of Threshold Robustness
+At the 75 threshold, results are less precise, with the 1â€“2 km premium exceeding the 0â€“1 km premium, suggesting the classification is too broad and captures general school access rather than the true school quality.
+At thresholds 80 and 85, estimates are more consistent, with a stronger premium within 1 km and a smaller but positive effect for 1â€“2 km.
+At the 90 threshold, both premiums decline, likely due to fewer schools being included.
+Overall, results are robust to threshold variation, with 80-85 providing the best balance between capturing desirable schools and preserving sufficient variation.
+5.1.2.2 Count of Good Schools by Distance Band(110)
+This robustness check replaces the band dummy variables with the count of good schools within each distance band. This is to help test whether the main findings are driven only by the existence of a nearby good school, or whether there is an additional intensity effect from having more than one good school nearby.
+Variable
+Coefficient(% Price Change per Additional Good School)
+Adj. RÂ²
+N
+Count of good schools within 0â€“1 km
+0.78%**
+0.8228
+291,419
+Count of good schools within 1â€“2 km
+0.07%**
+0.8228
+291,419
+Table 3: Results of Good School Count
+Table 3 shows that the price premium is concentrated primarily within the 1 km admission priority zone, and the number of desirable schools in that zone matters meaningfully. Beyond 1 km, the marginal value of additional good schools is much weaker, which is consistent with the declining importance of school proximity outside the highest-priority admission band.
+5.1.2.3 Alternative Weights in GSI(63)
+This robustness check tests whether the estimated premium depends on the GSI weighting scheme, while keeping SDI as the dominant component relative to GEP and SAP.
+GSI Weighting Scheme
+Premium within 0â€“1 km
+Premium within 1â€“2 km
+Adj. RÂ²
+N
+0.7 SDI, 0.15 GEP, 0.15 SAP
+1.17%**
+0.50%**
+0.8230
+291,419
+0.8 SDI, 0.1 GEP, 0.1 SAP
+1.09%**
+0.49%**
+0.8229
+291,419
+0.6 SDI, 0.2 GEP, 0.2 SAP
+1.16%**
+0.41%**
+0.8229
+291,419
+Table 4: Results of Alternative weights in GSI
+The similar estimates suggest results are not sensitive to GSI weighting, as long as SDI remains dominant. The consistency across specifications supports using an SDI-led GSI, capturing parental demand while incorporating school characteristics through GEP and SAP.
+5.1.3 Heterogeneity Analysis(187)
+5.1.3.1 Flat-Type Heterogeneity(108)
+Flat Type Group
+0â€“1 km
+1â€“2 km
+1â€“3 room flats
++0.43%**
+âˆ’2.22%**
+4-room and above flats
++1.33%**
++1.28%**
+Table X: Heterogeneity in School Proximity Premium
+To assess variation by household types, interaction terms between school proximity and flat type are included. Larger flats are interpreted as a proxy for family households, who are more sensitive to school access.
+Results show a stronger premium for larger flats. In particular, the interaction terms for larger flat types are positive and statistically significant, indicating that households residing in these units are willing to pay a higher premium to be near desirable primary schools.  In contrast, for 1â€“3 room flats, the premium is smaller within 1 km and negative for 1â€“2 km.
+Overall, the school premium varies by household type and is driven more by family-oriented buyers.
+5.1.3.2 Mature Estates Heterogeneity(79)
+Estate Type Group
+0â€“1 km
+1â€“2 km
+Non-mature estates
++0.93%**
++0.09%
+Mature estates
++1.19%**
++1.82%**
+Table X:
+To examine heterogeneity across estate types, the sample is split into mature and non-mature estates, with regressions estimated separately while retaining town fixed effects.
+The results show that within the 0â€“1 km band, the price premium is similar across both groups. In contrast, within the 1â€“2 km band, a statistically significant premium is observed only in mature estates, while the effect in non-mature estates is small and not statistically significant. This indicates that while the immediate proximity premium is comparable across estate types, the influence of school proximity extends over a wider distance in mature estates
+5.1.4 Hedonic Results Overview(170)
+The hedonic regression results provide consistent evidence that proximity to desirable primary schools is capitalised into HDB resale prices. The model estimates an average premium of about 1.16% within 1 km and 0.41% within 1â€“2 km.
+Robustness checks confirm the stability of this finding, with premiums remaining consistent across alternative definitions of â€œgoodâ€ schools and GSI weighting schemes. Additional analysis using school counts further shows that the marginal value of additional good schools is concentrated within the 1 km band, reinforcing the importance of close proximity.
+Heterogeneity results indicate that the premium is stronger for larger flats, suggesting that school-related housing demand is driven mainly by family households. While the 1 km premium is similar across estate types, it persists over a wider range in mature estates.
+Overall, while the hedonic results identify an average premium across distance bands, this effect is not uniform across households or spatial contexts. This highlights that school-related housing demand is inherently complex and cannot be fully captured by a single aggregate estimate.
+5.2 Regression Discontinuity Design(610)5.2.1 Empirical Results of Baseline RDD Model(51)
+Model
+Specification
+0â€“1km Premium (%)
+1â€“2km Premium (%)
+Baseline
+-1.83**
+-4.36**
+Table X: Baseline RDD Results
+Using the 80% threshold, the baseline RDD estimates indicate a statistically significant negative price discontinuity at both distance-boundary cutoffs. Because treatment is coded as , a negative  therefore suggests resale flats located just inside the 1km zone are cheaper than otherwise similar flats just outside the boundary.
+5.2.2 Robustness checks
+5.2.2.1 Alternative Definitions of â€œGoodâ€ Schools (Threshold Robustness)(52)
+To test sensitivity to the definition of â€œgood schoolsâ€, the RDD is re-estimated using SDI thresholds of 75, 80, 85, and 90.
+Threshold
+Premium (0â€“1 km)
+Premium (1â€“2 km)
+75
+-0.12%
+6.43%**
+80
+-1.83%**
+-4.36%**
+85
+-2.04%**
+-3.95%**
+90
+-0.68%**
+-3.52%**
+Table X: Baseline RDD with different â€œGoodâ€ School Thresholds
+The estimated jump is sensitive to threshold choice, with both magnitude and sign changing across specifications. This suggests the RDD effect is not stable to alternative definitions of school desirability.
+6.2.2.2 Bandwidth(70)
+To test whether the estimated discontinuity is sensitive to local sample choice, the RDD is re-estimated using bandwidths of 0.3, 0.5, 0.8, and 1.0 km around each cutoff.
+Bandwidth (km)
+Premium (0â€“1 km)
+Premium (1â€“2 km)
+0.3
+-3.55%**
+-4.38%**
+0.5
+-1.83%**
+-4.36%**
+0.8
+-1.16%**
+-3.95%**
+1.0
+-0.79%**
+-3.52%**
+Table X: Baseline RDD with Various Bandwidth
+The negative discontinuity remains across bandwidths, but decreases as the window widens, especially at 1 km. This is consistent with a stronger local effect near the cutoff, weakening as the distance between the observations and the boundary widens.
+5.2.2.3 Control Variables(63)
+To test whether the baseline discontinuities are driven by omitted locational and housing characteristics, controls are added (flat attributes, accessibility, school density, and year/town fixed effects).
+Model
+Specification
+0â€“1km Premium (%)
+1â€“2km Premium (%)
+Baseline
+-1.83**
+-4.36**
+Adjusted
++Controls
+-0.32%**
+0.02%
+Table X: Comparing Baseline RDD and Added Controls
+Adding controls substantially reduces the magnitude of the estimated discontinuities and removes significance at 2 km. This suggests part of the baseline jump reflects compositional differences in housing and location rather than a pure boundary effect.
+5.2.2.4 Covariate Balance(47)
+Covariate balance tests re-run the same RDD using pre-treatment or predetermined covariates as outcomes. If the design is locally comparable, these covariates should be continuous at the cutoff.
+Covariate (1km cutoff)
+Jump
+Significance
+Floor Area
+3.80
+Significant
+Remaining lease
+-0.20
+Not significant
+Distance to MRT
+0.66%
+Not significant
+Distance to mall
+-2.21%
+Significant
+Distance to hawker
+0.98%
+Not significant
+Distance to bus stop
+0.21%
+Significant
+Count of all schools (0-1km)
+1.10
+Significant
+Count of all schools (1-2km)
+-1.10
+Significant
+Table X: Baseline RDD Covariate Balance Test Result
+Several significant jumps indicate imperfect local balance in the baseline design, so baseline causal interpretation should be treated cautiously.
+5.2.3 Empirical Results of Extended RDD Model(52)
+The extended RDD introduces school fixed effects and clustered standard errors to tighten identification by comparing flats around boundaries relative to the same nearest desirable school.
+Model
+Specification
+0â€“1km Premium
+1â€“2km Premium
+Extended
+-1.71%
+0.60%
+Table X: Extended RDD Result
+None of the extended-model estimates is statistically significant at 5%. Relative to baseline, this indicates weaker evidence of a stable discontinuity once school-level heterogeneity is absorbed.
+5.2.4 Robustness checks5.2.4.1 Alternative Definitions of â€œGoodâ€ Schools (Threshold Robustness)(62)
+To test sensitivity to school-definition choices, the extended model is estimated at SDI thresholds 75, 80, 85, and 90.
+Threshold
+Premium (0â€“1 km)
+Premium (1â€“2 km)
+75
+-0.77%
+5.55%
+80
+-1.71%
+0.60%
+85
+-1.52%
+0.76%
+90
+-0.55%
+0.90%
+Table X: Extended RDD with different â€œGoodâ€ School Thresholds
+While estimates are statistically insignificant across all thresholds, the direction of coefficients remains broadly consistent. This suggests that the null result is robust to alternative definitions of school desirability. However, the lack of statistical significance indicates insufficient evidence of a causal price discontinuity.5.2.4.2 Bandwidth(17)
+Bandwidth (km)
+Premium (0â€“1 km)
+Premium (1â€“2 km)
+0.3
+-2.54%**
+0.99%
+0.5
+-1.71%
+0.60%
+0.8
+-1.04%
+-0.36%
+1.0
+-0.52%
+0.24%
+Table X: Extended RDD with Various Bandwidth
+Only the narrowest 1 km estimate is significant. This indicates weak bandwidth robustness in the extended specification.
+5.2.4.3 Control Variables(40)
+Model
+Specification
+0â€“1km Premium (%)
+1â€“2km Premium (%)
+Extended
+-1.71%
+0.60%
+Adjusted
++Controls
+-0.87%
+-0.74%
+Table X: Comparing Extended RDD and Added Controls
+Adding controls weakens the 1 km estimate and flips the sign at 2 km, while remaining statistically insignificant. This points to poor covariate balance, suggesting imperfect local balance in the baseline design, so extended causal interpretation should be treated cautiously.
+5.2.4.4 Covariate Balance(18)
+Covariate (1km cutoff)
+Jump
+Significance
+Floor Area
+2.88
+Significant
+Remaining lease
+-0.17
+Not significant
+Distance to MRT
+1.84%
+Not significant
+Distance to mall
+-4.38%
+Not significant
+Distance to hawker
+-1.76%
+Not significant
+Distance to bus stop
+0.18%
+Not significant
+Count of all schools (0-1km)
+1.09
+Significant
+Count of all schools (1-2km)
+-1.05
+Significant
+Table X: Extended RDD Covariate Balance Test Result
+Balance improves relative to baseline for most amenity covariates, though discontinuities remain for floor area and school-density counts.
+5.2.4.5 Donut(27)
+Donut Hole (km)
+Premium
+0.05
+-1.39%
+0.10
+-0.39%
+Table X: Extended RDD Donut Test Result
+Excluding observations near the cutoff does not change the results. Estimates remain insignificant and smaller in magnitude, suggesting no bias from sorting and no underlying causal effect.
+5.2.4.6 Placebo(32)
+Placebo Cutoff (km)
+Premium
+0.8
+0.58%
+1.2
+1.50%
+Table X: Extended RDD Placebo Test Result
+Placebo tests at 0.8 km and 1.2 km are insignificant, indicating no spurious discontinuities. This supports model validity but reinforces the lack of a causal effect at the true cutoff.
+5.2.5 RDD Results Overview(79)
+Across all specifications, the RDD finds no statistically significant price discontinuity at the 1 km cutoff. Results are robustly insignificant across alternative definitions of school desirability and donut specifications, and placebo tests show no spurious effects. However, estimates are sensitive to bandwidth choice and the inclusion of controls, and balance tests indicate residual covariate differences at the cutoff. Overall, there is no strong or stable evidence that eligibility for the 1 km priority rule leads to a price discontinuity.
+6. Policy Implications(226)
+From an Ministry of National Development (MND) perspective, the findings highlight how education-related factors can influence housing market outcomes. The hedonic results show that proximity to desirable primary schools is associated with higher resale prices, suggesting perceived school quality is capitalised into housing values and may reduce affordability.
+While the RDD finds no statistically significant causal effect of the 1 km policy, the broader relationship between school desirability and demand remains evident. This suggests that price differences are driven more by underlying neighbourhood characteristics and perceived school reputation than the policy itself. This indicates that spatial inequality may arise from concentrated demand around certain schools and estates, rather than discrete policy effects at the boundary.
+The heterogeneity analysis further shows that this demand is not uniform. The school effect is stronger for larger flats, indicating that family-oriented households are more sensitive to school access and drive a disproportionate share of price pressure. In addition, while the effect within 1 km is similar across estates, it persists over a wider range in mature estates, suggesting that school-related demand extends beyond the immediate priority zone in these areas.
+These findings underscore the importance of integrated planning between housing and education agencies. For MND, this includes addressing uneven demand across locations by improving estate attractiveness and working with the Ministry of Education to better manage school demand and perceptions.
+Targeted housing supply measures can also help alleviate pressure. Increasing the supply of larger flats in high-demand areas may address the needs of households most affected by school access considerations, while improving school quality and neighbourhood qualities in non-mature estates can help redistribute demand more evenly.
+Overall, policy should focus on managing the spatial and demographic concentration of school-related housing demand, rather than relying on adjustments to admission thresholds alone.
+7. Limitations and Constraints(113)
+Accessibility measures rely on current amenity locations rather than historical infrastructure at the time of transaction. School relocations and boundary changes are not captured, introducing measurement error, especially for earlier years, which may attenuate estimates. Future work could incorporate historical data to improve accuracy.
+Hedonic regression may suffer from omitted variable bias, as unobserved neighbourhood factors (e.g., prestige, environment, community) may affect both prices and school desirability. Hence, estimated premiums may partly reflect these factors.
+The definition of a â€œgoodâ€ school is based on the GSI, which reflects perceived demand and reputation rather than objective quality. While robustness checks are conducted, results should be interpreted as reflecting perceived, not actual, school quality.
+8. Conclusion(131)
+This study examines the relationship between proximity to desirable primary schools and HDB resale prices using hedonic regression and RDD. Hedonic results show a clear price premium near â€œgoodâ€ schools, reflecting strong demand. However, the RDD finds no statistically significant causal effect at the 1 km admission boundary, suggesting the premium is driven by broader neighbourhood factors rather than the policy.
+From a policy perspective, the findings highlight how perceived school quality shapes housing demand and contributes to spatial inequality, even without a discrete policy-induced price effect. While the 1 km priority rule does not create a sharp price discontinuity, demand pressures around desirable schools may still influence housing outcomes. Future research could incorporate richer measures of school quality, historical infrastructure data, and alternative identification strategies to better isolate causal effects.
+9. References
+National Library Board. (2023). Raffles Place. https://www.nlb.gov.sg/main/article-detail?cmsuuid=b62dd9d7-ea3c-42b4-a3b7-fd97d601cea4
+10. Appendix
+Appendix A
+Dataset
+Source
+Link
+Key variables
+Purpose
+HDB resale flat transactions
+data.gov.sg
+https://data.gov.sg/collections/189/view
+resale price, flat type, floor area, town, lease, storey range
+Main housing dataset
+HDB Resale Price Index (RPI)
+Housing & Development Board
+https://www.hdb.gov.sg/residential/selling-a-flat/overview/resale-statistics
+quarterly price index
+Deflation of nominal housing prices
+Primary school registration outcomes
+Aggregated school registration sources
+https://sgschooling.com/year/
+applicants, vacancies, ballot outcomes
+Construction of school desirability measures
+School characteristics (GEP, SAP)
+School-level information
+https://www.property2b2c.com/school-ranking/bespoke
+programme participation indicators
+Proxy for institutional prestige
+Bus stop locations
+LTA DataMall
+https://datamall.lta.gov.sg/content/datamall/en/dynamic-data.html
+latitude, longitude
+Accessibility control
+MRT station data
+LTA DataMall
+https://datamall.lta.gov.sg/content/datamall/en/static-data.html
+station coordinates
+Accessibility control and CBD reference
+Hawker centre dataset
+data.gov.sg
+https://data.gov.sg/datasets?query=hawker
+location coordinates
+Neighbourhood amenity proxy
+Shopping mall locations
+Compiled list and geocoded
+https://en.wikipedia.org/wiki/List_of_shopping_malls_in_Singapore
+mall coordinates
+Commercial accessibility proxy
+Geocoding service
+OneMap API
+https://www.onemap.gov.sg
+latitude, longitude
+Spatial matching of flats and schools
+Appendix B
+Mature Estate
+Ang Mo Kio
+Bedok
+Bishan
+Bukit Merah
+Bukit Timah
+Central Area
+Geylang
+Kallang/Whampoa
+Marine Parade
+Queenstown
+Serangoon
+Toa Payoh
