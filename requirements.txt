@@ -1,0 +1,21 @@
+# for API / LLM service
+fastapi
+uvicorn
+pydantic
+pandas
+numpy
+scikit-learn
+joblib
+python-dotenv
+
+# for notebook / analysis
+jupyter
+matplotlib
+seaborn
+statsmodels
+requests
+scipy
+beautifulsoup4
+pdfplumber
+xlrd
+rdrobust
