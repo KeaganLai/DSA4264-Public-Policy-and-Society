@@ -3,27 +3,26 @@
   <em>HDB Resale Prices & Proximity to Good Primary Schools</em> <br>
 </p>
 
-# Project Overview
-Housing demand in Singapore is closely tied to access to quality education, particularly at the primary school level. Under the Ministry of Education’s admission framework, priority is given to children living within 1 km of a primary school, creating a strong incentive for families to purchase homes near desirable schools.
+## Project Overview
+Housing demand in Singapore is closely tied to access to quality education, particularly at the primary school level. Under the Ministry of Education's admission framework, priority is given to children living within 1 km of a primary school, creating a strong incentive for families to purchase homes near desirable schools.
 
-As a result, proximity to “good” primary schools is widely believed to influence HDB resale flat prices. In this project, we take the perspective of data scientists in the Ministry of National Development, tasked with evaluating how school proximity affects resale prices.
+As a result, proximity to "good" primary schools is widely believed to influence HDB resale flat prices. In this project, we take the perspective of data scientists in the Ministry of National Development, tasked with evaluating how school proximity affects resale prices.
 
-To address this, we combine:
+We use:
+- Hedonic pricing models to estimate proximity premiums.
+- A Regression Discontinuity Design (RDD) around the 1 km school cutoff to estimate local causal effects.
 
-- Hedonic pricing models to capture overall price premiums associated with proximity, and
-- A Regression Discontinuity Design (RDD) leveraging the 1 km cutoff to isolate causal effects
-
-# Limitations
-
-
-# Project Structure
-```
+## Project Structure
+```text
 DSA4264-Public-Policy-and-Society/
-├── outputs/                           # Code outputs
-├── src/                               # Main code files
-├── .gitignore                         # Git ignore file
-└── README.md                          # Project documentation
-```
+├── artifacts/                         # Trained model artifacts + metadata for API
+├── data/                              # Input data files (download from Google Drive)
+├── outputs/                           # Generated outputs (RDD tables/plots/summaries)
+├── service/                           # FastAPI + chat/prediction web UI + LLM integration
+├── src/                               # Notebooks (data cleaning, hedonic, RDD)
+├── archive/                           # Older versions / archival files
+├── .gitignore
+└── README.md
 
 # Cloning repository
 
