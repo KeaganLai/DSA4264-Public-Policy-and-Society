@@ -23,14 +23,45 @@ DSA4264-Public-Policy-and-Society/
 ├── archive/                           # Older versions / archival files
 ├── .gitignore
 └── README.md
-
-# Cloning repository
-
-You can clone the repository here:
-```
-git clone https://github.com/KeaganLai/DSA4264-Public-Policy-and-Society.git
 ```
 
+## Full Pipeline 
+1) Clone repository
+```
+git clone https://github.com/KeaganLai/DSA4264-Public-Policy-and-Society.git 
+cd DSA4264-Public-Policy-and-Society
+```
+2) Create and activate a virtual environment
+```
+python -m venv .venv
+source venv/bin/activate
+```
+3) Install dependencies
+```
+pip install -r requirements.txt
+```
+4) Download data from Google Drive and place into data/
+   
+<https://drive.google.com/drive/folders/1ldE2xA_QpdttSjHPtE6T04_KMsEhhTAx>
+
+Then, create data/ folder locally
+```
+mkdir data
+```
+Next, put all provided files into data/
+```text
+data/
+├── final_df.csv                         
+├── hdb_nearest_sch.csv                            
+├── Good_School_index.csv
+```
+           
+5) Run notebooks first (required)
+Run all cells in this order:
+```
+src/hedonic.ipynb
+src/rdd.ipynb
+```
 # Acknowledgements
 - Singapore data.gov.sg
 - OneMap API
