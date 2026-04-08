@@ -342,16 +342,17 @@ Overall, the school premium varies by household type and is driven more by famil
 
 | Estate Type Group   | 0–1km Premium (%)   | 1–2km Premium (%)   |
 |--------------------|----------|----------|
-| Non-mature estates | 0.93** | 0.09   |
-| Mature estates     | 1.19** | 1.82** |
+| Non-mature estates | 1.14** | 0.17**   |
+| Mature estates     | 1.25 | 1.27** |
 
 <p><strong>Table 6: Results of Mature vs Non-Mature Estates</strong></p>
 
 </div>
 
-To examine heterogeneity across estate types, the sample is split into mature and non-mature estates, with regressions estimated separately while retaining town fixed effects.
+To examine heterogeneity across estate types, interaction terms between school proximity and mature estates are included.
 
-The results show that within the 0–1 km band, the price premium is similar across both groups. In contrast, within the 1–2 km band, a statistically significant premium is observed only in mature estates, while the effect in non-mature estates is small and not statistically significant. This indicates that while the immediate proximity premium is comparable across estate types, the influence of school proximity extends over a wider distance in mature estates.
+The results show that within the 0–1 km band, the price premium is similar across both groups. While mature estates exhibit a slightly higher premium, the difference is not statistically significant.In contrast, within the 1–2 km band, the premium is significantly higher in the mature estates than in the non-mature estates. This indicates that while the immediate proximity premium is comparable across estate types, the influence of school proximity extends over a wider distance in mature estates
+
 
 ### 5.1.4 Hedonic Results Overview
 
