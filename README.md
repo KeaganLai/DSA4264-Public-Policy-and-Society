@@ -74,9 +74,11 @@ data/
 ├── clean/
     ├── final_df.csv        
     ├── final_df_robust_1.csv
-    ├── final_df_robust_2.csv               
-    ├── hdb_nearest_sch.csv                        
+    ├── final_df_robust_2.csv                                      
     ├── Good_School_index.csv
+    .
+    .
+    .
 ├── raw/
 ```
 
