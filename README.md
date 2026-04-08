@@ -72,7 +72,9 @@ mkdir data, data\clean, data\raw
 ```text
 data/
 ├── clean/
-    ├── final_df.csv                         
+    ├── final_df.csv        
+    ├── final_df_robust_1.csv
+    ├── final_df_robust_2.csv               
     ├── hdb_nearest_sch.csv                        
     ├── Good_School_index.csv
 ├── raw/
@@ -93,9 +95,6 @@ data/
 ├── clean/                           
 ├── raw/
     ├── 4Q2025 RPI Table
-    ├──Good_School_index
-        ├── property2b2c_school_year_gep_sap
-        ├── school_year_2B_2C_panel.csv
 ```
 
 &emsp;&emsp;Then, run all cells in this order:
