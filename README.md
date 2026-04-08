@@ -71,9 +71,9 @@ mkdir data, data\clean, data\raw
 5) (a) If you would like to directly work with our clean data, download and set the paths as displayed below:
 ```text
 data/
-├── final_df.csv                         
-├── hdb_nearest_sch.csv
-├── clean/                           
+├── clean/
+    ├── final_df.csv                         
+    ├── hdb_nearest_sch.csv                        
     ├── Good_School_index.csv
 ├── raw/
 ```
@@ -92,12 +92,23 @@ src/rdd.ipynb
 data/
 ├── clean/                           
 ├── raw/
-    ├──
+    ├── 4Q2025 RPI Table
+    ├── mrt.csv
+    ├──Good_School_index
+        ├── property2b2c_school_year_gep_sap
+        ├── school_year_2B_2C_panel.csv
 ```
 
 &emsp;&emsp;Then, run all cells in this order:
 ```
-src/data cleaning/
+src/data cleaning/1_bus_data.ipynb
+src/data cleaning/2_hawker_data.ipynb
+src/data cleaning/3_mall_data.ipynb
+src/data cleaning/4_mrt_data.ipynb
+src/data cleaning/5_rpi_data.ipynb
+src/data cleaning/6_hdb_data.ipynb
+src/data cleaning/7_SDI_calculation.ipynb
+src/data cleaning/8_hdb_sch_features.ipynb
 src/hedonic.ipynb
 src/rdd.ipynb
 ```
