@@ -90,7 +90,11 @@ src/rdd.ipynb
 
 2) Create .env folder; It should contain:
 ```
-
+CHAT_LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=qwen2.5:7b-instruct
+OLLAMA_TIMEOUT_SECONDS=180
+REPORT_DOCX_AUTO_DISCOVER=0
 ```
 
 3) Run PATH script to detect Ollama.exe
