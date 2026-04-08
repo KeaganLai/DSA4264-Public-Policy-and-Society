@@ -28,28 +28,45 @@ DSA4264-Public-Policy-and-Society/
 └── README.md
 ```
 
+
 ## Full Pipeline 
 1) Clone repository
 ```
 git clone https://github.com/KeaganLai/DSA4264-Public-Policy-and-Society.git 
 cd DSA4264-Public-Policy-and-Society
 ```
+
+&nbsp;
+
+
 2) Create and activate a virtual environment
 ```
 python -m venv .venv
 source venv/bin/activate
 ```
+
+&nbsp;
+
+
 3) Install dependencies
 ```
 pip install -r requirements.txt
 ```
+
+&nbsp;
+
+
 4) Create data/ folder locally, with the clean/ and raw/ subgroups
 ```
 mkdir data, data\clean, data\raw
 ```
-Then, verify you can view the files from Google Drive: 
 
-<https://drive.google.com/drive/folders/1ldE2xA_QpdttSjHPtE6T04_KMsEhhTAx>
+&emsp;&emsp;Then, verify you can view the files from Google Drive: 
+
+&emsp;&emsp;<https://drive.google.com/drive/folders/1ldE2xA_QpdttSjHPtE6T04_KMsEhhTAx>
+
+&nbsp;
+
 
 5) (a) If you would like to directly work with our clean data, download and set the paths as displayed below:
 ```text
@@ -61,11 +78,14 @@ data/
 ├── raw/
 ```
 
-Then, run all cells in this order:
+&emsp;&emsp;Then, run all cells in this order:
 ```
 src/hedonic.ipynb
 src/rdd.ipynb
 ```
+
+&nbsp;
+
 
 5) (b) Else, if you would like to download the raw data and verify our data cleaning and calculation process, set the paths as displayed below:
 ```text
@@ -75,7 +95,7 @@ data/
     ├──
 ```
 
-Then, run all cells in this order:
+&emsp;&emsp;Then, run all cells in this order:
 ```
 src/data cleaning/
 src/hedonic.ipynb
@@ -84,9 +104,14 @@ src/rdd.ipynb
 
 
 
+
+
 # Setting up the LLM
-1) Install Ollama from official installer
-<https://ollama.com/download/windows>
+1) Install Ollama from official installer:
+   
+    <https://ollama.com/download/windows>
+
+&nbsp;
 
 2) Create .env folder; It should contain:
 ```
@@ -97,6 +122,8 @@ OLLAMA_TIMEOUT_SECONDS=180
 REPORT_DOCX_AUTO_DISCOVER=0
 ```
 
+&nbsp;
+
 3) Run PATH script to detect Ollama.exe
 ```
 $ollamaPath = "$env:LOCALAPPDATA\Programs\Ollama"
@@ -106,25 +133,35 @@ if (-not (($userPath -split ';') -contains $ollamaPath)) {
 }
 ```
 
+&nbsp;
+
 4) Start Ollama in the background, or run
 ```
 ollama serve
 ```
+
+&nbsp;
 
 5) Verify Ollama:
 ```
 ollama --version
 ```
 
+&nbsp;
+
 6) Pull model once
 ```
 ollama pull qwen2.5:7b-instruct
 ```
 
+&nbsp;
+
 7) (Optional) If artifacts/ is empty, train model using
 ```
 python -m service.train_baseline --all-thresholds
 ```
+
+&nbsp;
 
 8) Verify that you have ran hedonic.ipynb and rdd.ipynb, and outputs/ folder contains:
 ```text
@@ -133,11 +170,16 @@ outputs/
 ├── rdd_improved/
 ```
 
+&nbsp;
+
 ## Running the application
 1) Start the application with
 ```
 python -m uvicorn --env-file .env service.main:app --reload
 ```
+
+&nbsp;
+
 2) Open the dashboard in a browser of your choice at
 ```
 http://127.0.0.1:8000/
