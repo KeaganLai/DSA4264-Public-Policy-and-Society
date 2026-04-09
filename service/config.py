@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-DATA_PATH = ROOT_DIR / "data" / "hdb_nearest_sch.csv"
+DATA_PATH = ROOT_DIR / "data" / "clean" / "hdb_nearest_sch.csv"
 RDD_SUMMARY_PATH = ROOT_DIR / "outputs" / "rdd_improved" / "rdd_schoolfe_summary.md"
 
 ARTIFACTS_DIR = ROOT_DIR / "artifacts"
