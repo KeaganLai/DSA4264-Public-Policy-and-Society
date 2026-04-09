@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 &nbsp;
 
-4) Create .env file and add your LTA DataMall API key
+4) Create `.env` file and add your LTA DataMall API key
 ```env
 LTA_KEY=your_lta_api_key_here
 ```
