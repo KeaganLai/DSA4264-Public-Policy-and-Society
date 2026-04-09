@@ -200,8 +200,3 @@ python -m uvicorn --env-file .env service.main:app --reload
 ```
 http://127.0.0.1:8000/
 ```
-
-
-# Acknowledgements
-- Singapore data.gov.sg
-- OneMap API
