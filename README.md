@@ -62,10 +62,19 @@ pip install -r requirements.txt
 
 &nbsp;
 
-
-4) Create data/ folder locally, with the clean/ and raw/ subgroups
+4) Add your LTA DataMall API key into .env file
+```env
+LTA_KEY=your_lta_api_key_here
 ```
-mkdir data, data\clean, data\raw
+
+&nbsp;
+
+
+5) Create data/ folder locally, with the clean/ and raw/ subgroups
+```
+mkdir data
+mkdir data\clean
+mkdir data\raw
 ```
 
 &emsp;&emsp;Then, verify you can view the files from Google Drive: 
@@ -75,7 +84,7 @@ mkdir data, data\clean, data\raw
 &nbsp;
 
 
-5) (a) If you would like to directly work with our clean data, download and set the paths as displayed below:
+6) (a) If you would like to directly work with our clean data, download and set the paths as displayed below:
 ```text
 data/
 ├── clean/
@@ -98,7 +107,7 @@ src/rdd.ipynb
 &nbsp;
 
 
-5) (b) Else, if you would like to download the raw data and verify our data cleaning and calculation process, set the paths as displayed below:
+6) (b) Else, if you would like to download the raw data and verify our data cleaning and calculation process, set the paths as displayed below:
 ```text
 data/
 ├── clean/                           
@@ -110,6 +119,8 @@ data/
     .
     .
 ```
+
+&emsp;&emsp;Make sure the repository-root `.env` file contains `LTA_KEY`, since `src/data cleaning/1_bus_data.ipynb` reads it before calling the LTA DataMall API.
 
 &emsp;&emsp;Then, run all cells in this order:
 ```
@@ -136,8 +147,9 @@ src/rdd.ipynb
 
 &nbsp;
 
-2) Create .env folder in repo root; It should contain:
+2) Create a `.env` file in the repo root. It should contain:
 ```
+LTA_KEY=your_lta_api_key_here
 CHAT_LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=qwen2.5:7b-instruct
