@@ -131,8 +131,6 @@ src/data cleaning/4_mrt_data.ipynb
 src/data cleaning/5_rpi_data.ipynb
 src/data cleaning/6_hdb_data.ipynb
 src/data cleaning/7_SDI_calculation.ipynb
-src/data cleaning/7_SDI_robust1_calculation.ipynb
-src/data cleaning/7_SDI_robust2_calculation.ipynb
 src/data cleaning/8_hdb_sch_features.ipynb
 src/hedonic.ipynb
 src/rdd.ipynb
