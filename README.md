@@ -55,7 +55,7 @@ source .venv/bin/activate
 &nbsp;
 
 
-3) Install dependencies
+3) Install dependencies in venv kernel
 ```
 pip install -r requirements.txt
 ```
