@@ -97,6 +97,11 @@ data/
 ├── clean/                           
 ├── raw/
     ├── 4Q2025 RPI Table
+    ├── Resale Flat Prices (Based on Approval Date), 1990 - 1999
+    ├── Resale Flat Prices (Based on Approval Date), 2000 - Feb 2012
+    .
+    .
+    .
 ```
 
 &emsp;&emsp;Then, run all cells in this order:
@@ -124,7 +129,7 @@ src/rdd.ipynb
 
 &nbsp;
 
-2) Create .env folder; It should contain:
+2) Create .env folder in repo root; It should contain:
 ```
 CHAT_LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://127.0.0.1:11434
