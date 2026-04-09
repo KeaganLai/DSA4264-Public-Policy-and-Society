@@ -522,7 +522,10 @@ Secondly, the measurement of “good” schools could be refined by incorporatin
 
 Finally, future research could model housing policy interventions more explicitly by examining whether school-related price premiums vary across different regulatory regimes. 
 
-These extensions would allow policymakers to better distinguish between demand-driven premiums and policy-induced effects, improving the targeting of housing and education interventions
+These extensions would allow policymakers to better distinguish between demand-driven premiums and policy-induced effects, improving the targeting of housing and education interventions.
+
+---
+Word count: 2865 (Excluding headers, tables, references and appendix)
 
 ## 9. References
 National Library Board. (2023). Raffles Place. 
