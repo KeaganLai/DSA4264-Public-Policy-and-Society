@@ -39,12 +39,19 @@ cd DSA4264-Public-Policy-and-Society
 &nbsp;
 
 
-2) Create and activate a virtual environment
+2) (a) Create and activate a virtual environment (on Windows)
 ```
 python -m venv .venv
-source venv/bin/activate
+.\.venv\Scripts\Activate.ps1
 ```
 
+&nbsp;
+
+2) (b) Create and activate a virtual environment (on Mac)
+```
+python -m venv .venv
+source .venv/bin/activate
+```
 &nbsp;
 
 
